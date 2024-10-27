@@ -5,16 +5,39 @@ import matplotlib.pyplot as plt
 
 # Parametry
 population_size = 100      # Liczba osobników w populacji
-mutation_rate = 0.2        # Prawdopodobieństwo mutacji
+mutation_rate = 0.5        # Prawdopodobieństwo mutacji
 num_generations = 100     # Liczba generacji
 elite_size = 2             # Liczba elitarnych osobników, które przechodzą do kolejnej generacji
 grid_size = (20, 20)       # Rozmiar mapy (np. 20x20)
 start_point = (0, 0)       # Punkt startowy
-end_point = (19, 19)       # Punkt końcowy
+end_point = (17, 16)       # Punkt końcowy
 
 # Przykładowe przeszkody
 #obstacles = {(5, 5), (7, 6),  (6, 4), (10, 10), (17, 18)}
-obstacles = {(5,6),(5,7),(5,8),(5,9),(5,10)}
+#obstacles = {(5,6),(5,7),(5,8),(5,9),(5,10)}
+
+#TODO: Dodać zaciąganie przeszkód z pliku
+#TODO: Przekleić funkcje do lib.py
+#TODO: Sprawdzenie, czy endpoint nie jest otoczony i czy nie jestet przeszkodą
+#TODO: Dodać badanie wyboru trasy dla zmieniających się parametrów np. mutation rate += 0.1 i wyświetlić w celu porównaniu
+
+obstacles = {
+    (3, 3), (3, 4), (3, 5), (3, 6), (3, 7),  # pionowy blok
+    (6, 1), (6, 2), (6, 3), (6, 4),         # krótki poziomy blok
+    (8, 8), (8, 9), (8, 10), (8, 11),       # kolejny poziomy blok
+    (10, 3), (11, 3), (12, 3), (13, 3),     # pionowy blok
+    (15, 15), (15, 16), (15, 17),           # krótki poziomy blok
+    (18, 5), (17, 5), (16, 5), (15, 5),     # kolejny poziomy blok
+    (10, 10), (11, 10), (12, 10),           # centralny poziomy blok
+    (5, 13), (5, 14), (5, 15), (5, 16),     # kolejny pionowy blok
+    (7, 17), (8, 17), (9, 17),              # poziomy blok
+    (18, 18), (17, 17), (16, 16), (15, 15), # ukośny blok
+    (13, 13), (12, 12), (11, 11), (10, 10), # ukośny blok
+    (4, 8), (5, 8), (6, 8),                 # krótki poziomy blok
+    # (14, 14), (14, 13), (14, 12),           # krótki pionowy blok
+    #(9, 2), (10, 2), (11, 2),               # blok na dole
+    #(2, 17), (3, 17), (4, 17), (5, 17)      # blok na górze
+}
 
 # Funkcja tworzenia początkowej populacji
 def create_population():
