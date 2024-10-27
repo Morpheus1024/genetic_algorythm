@@ -53,13 +53,22 @@ def fitness(path):
     collisions = sum(1 for p in path if p in obstacles)
     return distance + collisions * 100  # Kara za kolizje
 
-# Selekcja ruletkowa
+# Selekcja ruletkowa z dodatkowym zabezpieczeniem
 def selection(population):
+    if len(population) <= elite_size:
+        return population  # Zwracamy całą populację, jeśli jest za mała na selekcję
+    
     scores = [1 / (1 + fitness(individual)) for individual in population]
     total = sum(scores)
     probs = [score / total for score in scores]
-    selected = np.random.choice(population, size=population_size - elite_size, p=probs).tolist()
+    
+    # Bezpieczne losowanie osobników z prawdopodobieństwem
+    try:
+        selected = np.random.choice(population, size=population_size - elite_size, p=probs).tolist()
+    except ValueError:
+        selected = random.sample(population, population_size - elite_size)  # Wybierz losowo, jeśli błąd
     return selected
+
 
 # Operator krzyżowania
 def crossover(parent1, parent2):
