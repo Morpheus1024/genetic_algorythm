@@ -1,6 +1,6 @@
-import numpy as np
+import lib
 import random
-
+import numpy as np
 import matplotlib.pyplot as plt
 
 # Parametry
@@ -20,6 +20,7 @@ end_point = (17, 16)       # Punkt końcowy
 #TODO: Przekleić funkcje do lib.py
 #TODO: Sprawdzenie, czy endpoint nie jest otoczony i czy nie jestet przeszkodą
 #TODO: Dodać badanie wyboru trasy dla zmieniających się parametrów np. mutation rate += 0.1 i wyświetlić w celu porównaniu
+#TODO: W README dodać opis EGA i opis programu
 
 obstacles = {
     (3, 3), (3, 4), (3, 5), (3, 6), (3, 7),  # pionowy blok
