@@ -1,19 +1,21 @@
 import numpy as np
 import random
 
+import matplotlib.pyplot as plt
+
 # Parametry
 population_size = 100      # Liczba osobników w populacji
-mutation_rate = 0.1        # Prawdopodobieństwo mutacji
-num_generations = 1000     # Liczba generacji
-elite_size = 5             # Liczba elitarnych osobników, które przechodzą do kolejnej generacji
+mutation_rate = 0.2        # Prawdopodobieństwo mutacji
+num_generations = 100     # Liczba generacji
+elite_size = 2             # Liczba elitarnych osobników, które przechodzą do kolejnej generacji
 grid_size = (20, 20)       # Rozmiar mapy (np. 20x20)
 start_point = (0, 0)       # Punkt startowy
 end_point = (19, 19)       # Punkt końcowy
 
 # Przykładowe przeszkody
-obstacles = {(5, 5), (5, 6), (6, 5), (10, 10), (15, 15)}
+#obstacles = {(5, 5), (7, 6),  (6, 4), (10, 10), (17, 18)}
+obstacles = {(5,6),(5,7),(5,8),(5,9),(5,10)}
 
-# Funkcja tworzenia początkowej populacji
 # Funkcja tworzenia początkowej populacji
 def create_population():
     population = []
@@ -116,3 +118,16 @@ for generation in range(num_generations):
 
 # Wyświetlenie najlepszej znalezionej ścieżki
 print("Best Path Found:", best_path)
+
+# Wizualizacja ścieżki
+plt.figure(figsize=(8, 8))
+plt.scatter(*zip(*obstacles), color='red', s=100)
+plt.plot(*zip(*best_path), color='blue', marker='o')
+plt.scatter(*zip(*best_path), color='blue', s=100)
+plt.scatter(*start_point, color='green', s=100)
+plt.scatter(*end_point, color='green', s=100)
+plt.xlim(-1, grid_size[0])
+plt.ylim(-1, grid_size[1])
+plt.gca().invert_yaxis()
+plt.show()
+
