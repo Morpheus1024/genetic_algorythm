@@ -10,11 +10,16 @@ num_generations = 100     # Liczba generacji
 elite_size = 2             # Liczba elitarnych osobników, które przechodzą do kolejnej generacji
 grid_size = (20, 20)       # Rozmiar mapy (np. 20x20)
 start_point = (0, 0)       # Punkt startowy
-end_point = (19, 19)       # Punkt końcowy
+end_point = (7, 10)       # Punkt końcowy
 
 # Przykładowe przeszkody
 #obstacles = {(5, 5), (7, 6),  (6, 4), (10, 10), (17, 18)}
-obstacles = {(5,6),(5,7),(5,8),(5,9),(5,10)}
+obstacles = {
+                (5,6),(5,7),(5,8),(5,9),(5,10)
+                ,(6,6),(6,7),(6,8),(6,9),(6,10)
+
+
+            }
 
 # Funkcja tworzenia początkowej populacji
 def create_population():
