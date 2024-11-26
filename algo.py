@@ -1,15 +1,16 @@
-import numpy as np
+import lib
 import random
-
+import numpy as np
 import matplotlib.pyplot as plt
 
 # Parametry
 population_size = 100      # Liczba osobników w populacji
-mutation_rate = 0.2        # Prawdopodobieństwo mutacji
+mutation_rate = 0.5        # Prawdopodobieństwo mutacji
 num_generations = 100     # Liczba generacji
 elite_size = 2             # Liczba elitarnych osobników, które przechodzą do kolejnej generacji
 grid_size = (20, 20)       # Rozmiar mapy (np. 20x20)
 start_point = (0, 0)       # Punkt startowy
+
 end_point = (7, 10)       # Punkt końcowy
 
 # Przykładowe przeszkody
@@ -19,39 +20,31 @@ obstacles = {
                 ,(6,6),(6,7),(6,8),(6,9),(6,10)
 
 
-            }
+#DONE: Dodać zaciąganie przeszkód z pliku
+#WIP: Przekleić funkcje do lib.py
+#TODO: Sprawdzenie, czy endpoint nie jest otoczony i czy nie jestet przeszkodą
+#TODO: Dodać badanie wyboru trasy dla zmieniających się parametrów np. mutation rate += 0.1 i wyświetlić w celu porównaniu
+#TODO: W README dodać opis EGA i opis programu
 
-# Funkcja tworzenia początkowej populacji
-def create_population():
-    population = []
-    for _ in range(population_size):
-        path = [start_point]
-        while path[-1] != end_point:
-            x, y = path[-1]
-            
-            # Celowanie w kierunku punktu końcowego
-            dx = np.sign(end_point[0] - x)
-            dy = np.sign(end_point[1] - y)
-            
-            # Wybieranie następnego kroku w kierunku celu lub losowego
-            next_step = (x + dx * random.choice([0, 1]), y + dy * random.choice([0, 1]))
-            next_step = (
-                max(0, min(next_step[0], grid_size[0] - 1)),
-                max(0, min(next_step[1], grid_size[1] - 1))
-            )
-            
-            # Sprawdzenie kolizji z przeszkodami i duplikacji punktu
-            if next_step not in path and next_step not in obstacles:
-                path.append(next_step)
-            
-            # Bezpieczeństwo: ograniczenie liczby kroków
-            if len(path) > grid_size[0] * grid_size[1]:  # Max liczba kroków
-                break
-        
-        # Dodaj ścieżkę tylko, jeśli osiągnęła punkt końcowy
-        if path[-1] == end_point:
-            population.append(path)
-    return population
+obstacles = {
+    (3, 3), (3, 4), (3, 5), (3, 6), (3, 7),  # pionowy blok
+    (6, 1), (6, 2), (6, 3), (6, 4),         # krótki poziomy blok
+    (8, 8), (8, 9), (8, 10), (8, 11),       # kolejny poziomy blok
+    (10, 3), (11, 3), (12, 3), (13, 3),     # pionowy blok
+    (15, 15), (15, 16), (15, 17),           # krótki poziomy blok
+    (18, 5), (17, 5), (16, 5), (15, 5),     # kolejny poziomy blok
+    (10, 10), (11, 10), (12, 10),           # centralny poziomy blok
+    (5, 13), (5, 14), (5, 15), (5, 16),     # kolejny pionowy blok
+    (7, 17), (8, 17), (9, 17),              # poziomy blok
+    (18, 18), (17, 17), (16, 16), (15, 15), # ukośny blok
+    (13, 13), (12, 12), (11, 11), (10, 10), # ukośny blok
+    (4, 8), (5, 8), (6, 8),                 # krótki poziomy blok
+    # (14, 14), (14, 13), (14, 12),           # krótki pionowy blok
+    #(9, 2), (10, 2), (11, 2),               # blok na dole
+    #(2, 17), (3, 17), (4, 17), (5, 17)      # blok na górze
+}
+
+obstacles = lib.read_obstacles_from_file('obstacles.txt')
 
 
 # Funkcja oceny ścieżki
@@ -65,7 +58,7 @@ def selection(population):
     if len(population) <= elite_size:
         return population  # Zwracamy całą populację, jeśli jest za mała na selekcję
     
-    scores = [1 / (1 + fitness(individual)) for individual in population]
+    scores = [1 / (1 + lib.fitness(individual)) for individual in population]
     total = sum(scores)
     probs = [score / total for score in scores]
     
@@ -76,12 +69,6 @@ def selection(population):
         selected = random.sample(population, population_size - elite_size)  # Wybierz losowo, jeśli błąd
     return selected
 
-
-# Operator krzyżowania
-def crossover(parent1, parent2):
-    split = random.randint(1, min(len(parent1), len(parent2)) - 2)
-    child = parent1[:split] + [p for p in parent2 if p not in parent1[:split]]
-    return child
 
 # Operator mutacji
 def mutate(path):
@@ -96,7 +83,7 @@ def mutate(path):
     return path
 
 # Główna pętla algorytmu EGA
-population = create_population()
+population = lib.create_population(population_size, start_point, end_point, grid_size, obstacles)
 for generation in range(num_generations):
     # Sortowanie populacji według funkcji oceny
     population = sorted(population, key=fitness)
@@ -109,7 +96,7 @@ for generation in range(num_generations):
     for i in range(0, len(selected), 2):
         if i + 1 < len(selected):
             parent1, parent2 = selected[i], selected[i + 1]
-            child1, child2 = crossover(parent1, parent2), crossover(parent2, parent1)
+            child1, child2 = lib.crossover(parent1, parent2), lib.crossover(parent2, parent1)
             new_population.append(mutate(child1))
             new_population.append(mutate(child2))
     
