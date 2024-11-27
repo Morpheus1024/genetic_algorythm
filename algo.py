@@ -2,52 +2,25 @@ import numpy as np
 import random
 
 import matplotlib.pyplot as plt
+from lib import create_population
 
 # Parametry
 population_size = 100      # Liczba osobników w populacji
 mutation_rate = 0.2        # Prawdopodobieństwo mutacji
 num_generations = 100     # Liczba generacji
 elite_size = 2             # Liczba elitarnych osobników, które przechodzą do kolejnej generacji
-grid_size = (20, 20)       # Rozmiar mapy (np. 20x20)
+grid_size = (50, 50)       # Rozmiar mapy (np. 20x20)
 start_point = (0, 0)       # Punkt startowy
-end_point = (19, 19)       # Punkt końcowy
+end_point = (49, 49)       # Punkt końcowy
 
 # Przykładowe przeszkody
 #obstacles = {(5, 5), (7, 6),  (6, 4), (10, 10), (17, 18)}
-obstacles = {(5,6),(5,7),(5,8),(5,9),(5,10)}
+obstacles = {
+                (5,6),(5,7),(5,8),(5,9),(5,10)
+                ,(6,6),(6,7),(6,8),(6,9),(6,10)
 
-# Funkcja tworzenia początkowej populacji
-def create_population():
-    population = []
-    for _ in range(population_size):
-        path = [start_point]
-        while path[-1] != end_point:
-            x, y = path[-1]
-            
-            # Celowanie w kierunku punktu końcowego
-            dx = np.sign(end_point[0] - x)
-            dy = np.sign(end_point[1] - y)
-            
-            # Wybieranie następnego kroku w kierunku celu lub losowego
-            next_step = (x + dx * random.choice([0, 1]), y + dy * random.choice([0, 1]))
-            next_step = (
-                max(0, min(next_step[0], grid_size[0] - 1)),
-                max(0, min(next_step[1], grid_size[1] - 1))
-            )
-            
-            # Sprawdzenie kolizji z przeszkodami i duplikacji punktu
-            if next_step not in path and next_step not in obstacles:
-                path.append(next_step)
-            
-            # Bezpieczeństwo: ograniczenie liczby kroków
-            if len(path) > grid_size[0] * grid_size[1]:  # Max liczba kroków
-                break
-        
-        # Dodaj ścieżkę tylko, jeśli osiągnęła punkt końcowy
-        if path[-1] == end_point:
-            population.append(path)
-    return population
 
+            }
 
 # Funkcja oceny ścieżki
 def fitness(path):
@@ -91,7 +64,7 @@ def mutate(path):
     return path
 
 # Główna pętla algorytmu EGA
-population = create_population()
+population = create_population(obstacles=obstacles, population_size=population_size, grid_size=grid_size,)
 for generation in range(num_generations):
     # Sortowanie populacji według funkcji oceny
     population = sorted(population, key=fitness)
