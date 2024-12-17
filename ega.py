@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 # Definicja parametrów algorytmu
 POPULATION_SIZE = 100  # Wielkość populacji (dostosowanie do różnych problemów)
 CHROMOSOME_LENGTH = 20  # Maksymalna liczba punktów na trasie
-CROSSOVER_RATE = 0.8  # Prawdopodobieństwo krzyżowania (wysoka eksploracja)
-MUTATION_RATE = 0.2  # Prawdopodobieństwo mutacji (zachowanie różnorodności)
+CROSSOVER_RATE = 1  # Prawdopodobieństwo krzyżowania (wysoka eksploracja)
+MUTATION_RATE = 0.8  # Prawdopodobieństwo mutacji (zachowanie różnorodności)
 MAX_GENERATIONS = 10000  # Maksymalna liczba pokoleń
 
 # Funkcja sprawdzająca kolizję z przeszkodami
@@ -35,7 +35,7 @@ def fitness_function(chromosome, start, end, obstacles):
     for i in range(len(path) - 1):
         # Sprawdzenie kolizji dla każdego punktu
         if is_collision(path[i], obstacles) or is_collision(path[i+1], obstacles):
-            penalty += 1e6  # Wysoka kara za kolizję
+            penalty += 1e8  # Wysoka kara za kolizję
 
         # Długość odcinka między dwoma punktami
         total_distance += np.linalg.norm(np.array(path[i]) - np.array(path[i+1]))
@@ -114,6 +114,8 @@ def enhanced_genetic_algorithm(start, end, obstacles):
     population = initialize_population()
     best_solution = None
     best_fitness = -np.inf
+    best_fitnesses = []
+    average_fitnesses = []
 
     for generation in range(MAX_GENERATIONS):
         # Obliczanie przystosowania dla całej populacji
@@ -124,6 +126,10 @@ def enhanced_genetic_algorithm(start, end, obstacles):
             if fit > best_fitness:
                 best_fitness = fit
                 best_solution = population[i]
+
+        # Zapisanie najlepszej i średniej wartości fitness
+        best_fitnesses.append(best_fitness)
+        average_fitnesses.append(np.mean(fitnesses))
 
         # Selekcja lepszych osobników
         selected = tournament_selection(population, fitnesses)
@@ -143,6 +149,15 @@ def enhanced_genetic_algorithm(start, end, obstacles):
 
         # Wyświetlanie postępu
         print(f"Pokolenie {generation}: Najlepsze fitness = {best_fitness}")
+
+    # Rysowanie wykresu najlepszej i średniej wartości fitness
+    plt.figure()
+    plt.plot(best_fitnesses, label='Best Fitness')
+    plt.plot(average_fitnesses, label='Average Fitness')
+    plt.xlabel('Generation')
+    plt.ylabel('Fitness')
+    plt.legend()
+    plt.show()
 
     return best_solution
 
