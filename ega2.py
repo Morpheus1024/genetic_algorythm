@@ -75,7 +75,7 @@ def select_parents(population, fitnesses, tournament_size=3):
         parents.append(tournament[0][0])
     return parents
 
-def elitism(population, fitnesses, elitism_size=2):
+def elitism(population, fitnesses, elitism_size=4):
     """Zachowanie najlepszych osobników (elitarność)."""
     sorted_population = [x for _, x in sorted(zip(fitnesses, population), key=lambda x: x[0], reverse=True)]
     return sorted_population[:elitism_size]
@@ -88,6 +88,7 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
 
     best_fitness_history = []  # Historia najlepszych fitnessów
     best_population_history = []  # Historia najlepszych populacji
+    mean_fitness_history = []  # Historia średnich fitnessów
 
     for generation in range(num_generations):
         # Dynamiczna zmiana parametrów
@@ -123,18 +124,22 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
         # Dodajemy do historii najlepszą populację
         best_population_index = fitnesses.index(best_fitness)
         best_population_history.append(population[best_population_index])
+        mean_fitness_history.append(np.mean(fitnesses))
 
     # Wybór najlepszego rozwiązania
     best_path = min(zip(population, fitnesses), key=lambda x: x[1])[0]
 
     # Wizualizacja zmian najlepszych fitnessów
     plt.plot(best_fitness_history)
+    plt.plot(mean_fitness_history)
     plt.xlabel('Generacja')
-    plt.ylabel('Najlepszy fitness')
-    plt.title('Ewolucja najlepszego fitnessu')
+    plt.ylabel('Wartość przystosowania')
+    plt.title('Przebieg ewolucji przystosowania')
+    plt.suptitle(f"Rozmiar populacji={population_size}, Liczba generacji={num_generations}")
+    plt.legend(['Najlepsza wartość przystosowania', 'Średnia wartość przystosowania'])
     plt.show()
 
-    return best_path, best_fitness_history, best_population_history
+    return best_path, best_fitness_history, best_population_history, mean_fitness_history
 
 def plot_path(path, obstacles, start, end):
     """Wizualizacja trasy."""
@@ -168,24 +173,19 @@ if __name__ == "__main__":
     (75, 75, 85, 85), (5, 5, 10, 10), (90, 90, 95, 95)
     ]
 
+
     generation_number1 = 90
     generation_number2 = 225
     generation_number3 = 360
 
     population_size1 = 30
     population_size2 = 60
-    # best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size1)
-
-    # # Wizualizacja trasy
-    # plot_path(best_path, obstacles, start, end)
-
-    # best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size2)
 
     for population_size in [population_size1, population_size2]:
         for obstacles in [obstacles1, obstacles2, obstacles3]:
             for generation_number in [generation_number1, generation_number2, generation_number3]:
-                best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles3, num_generations=generation_number, population_size=population_size)
-                plot_path(best_path, obstacles3, start, end)
+                best_path, best_fitness_history, best_population_history, mean_fitness_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size)
+                plot_path(best_path, obstacles, start, end)
 
 
 
