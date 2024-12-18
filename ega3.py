@@ -123,7 +123,7 @@ def elitism(population, fitnesses, elitism_size=2):
 
 
 def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, population_size=50, num_points=5,
-                               mutation_rate=0.1):
+                               mutation_rate=0.12, crossover_rate=0.7):
     """Algorytm genetyczny EGA do planowania drogi z elitarnością, adaptacyjnymi parametrami i metodami selekcji."""
     population = initialize_population(start, end, population_size, num_points)
     bounds = [(min(start[0], end[0]), min(start[1], end[1])),
@@ -147,10 +147,18 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
         new_population = elites
         while len(new_population) < population_size:
             parent1, parent2 = select_parents(population, fitnesses, tournament_size)
-            child1, child2 = pmx_crossover(parent1, parent2)  # Zastosowanie PMX
-            new_population.append(mutate(child1, mutation_rate, bounds))
-            if len(new_population) < population_size:
-                new_population.append(mutate(child2, mutation_rate, bounds))
+
+            # Zastosowanie krzyżowania z prawdopodobieństwem crossover_rate
+            if random.random() < crossover_rate:
+                child1, child2 = pmx_crossover(parent1, parent2)
+                new_population.append(mutate(child1, mutation_rate, bounds))
+                if len(new_population) < population_size:
+                    new_population.append(mutate(child2, mutation_rate, bounds))
+            else:
+                # Jeżeli krzyżowanie się nie odbędzie, przenosimy rodziców do nowej populacji
+                new_population.append(mutate(parent1, mutation_rate, bounds))
+                if len(new_population) < population_size:
+                    new_population.append(mutate(parent2, mutation_rate, bounds))
 
         population = new_population
 
@@ -170,7 +178,6 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
     plt.xlabel('Generacja')
     plt.ylabel('Najlepszy fitness')
     plt.title('Ewolucja najlepszego fitnessu')
-    plt.title(f'Pokolenie {population_size}')
     plt.show()
 
     return best_path, best_fitness_history, best_population_history
@@ -196,12 +203,12 @@ if __name__ == "__main__":
     end = (99, 99)
     obstacles1 = [(30, 30, 50, 50), (60, 10, 70, 40), (20, 60, 40, 80)]
     generation_number = 1000
-    population_size1 = 25
-    population_size2 = 50
+    population_size1 = 30
+    population_size2 = 60
 
     for population_size in [population_size1, population_size2]:
         best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end,
                                                                                               obstacles=obstacles1,
                                                                                               num_generations=generation_number,
-                                                                                              population_size=population_size)
+                                                                                              population_size=population_size, crossover_rate=0.7)
         plot_path(best_path, obstacles1, start, end, population_size)
