@@ -154,9 +154,26 @@ if __name__ == "__main__":
     start = (1, 1)
     end = (99, 99)
     obstacles1 = [(30, 30, 50, 50), (60, 10, 70, 40), (20, 60, 40, 80)]
-    generation_number = 1000
-    population_size1 = 25
-    population_size2 = 50
+
+    obstacles2 = [
+    (5, 5, 10, 10), (12, 15, 17, 20), (25, 30, 30, 35), (40, 45, 45, 50),
+    (50, 20, 55, 25), (60, 10, 65, 15), (70, 70, 75, 75), (80, 80, 85, 85),
+    (90, 5, 95, 10), (10, 90, 15, 95), (55, 55, 60, 60), (75, 25, 80, 30),
+    (20, 75, 25, 80), (85, 15, 90, 20), (35, 65, 40, 70), (95, 40, 99, 45)
+    ]
+
+    obstacles3 = [
+    (10, 10, 30, 20), (40, 50, 60, 70), (5, 80, 20, 95),
+    (70, 10, 90, 20), (50, 30, 55, 35), (30, 60, 40, 65),
+    (75, 75, 85, 85), (5, 5, 10, 10), (90, 90, 95, 95)
+    ]
+
+    generation_number1 = 90
+    generation_number2 = 225
+    generation_number3 = 360
+
+    population_size1 = 30
+    population_size2 = 60
     # best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size1)
 
     # # Wizualizacja trasy
@@ -165,8 +182,10 @@ if __name__ == "__main__":
     # best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size2)
 
     for population_size in [population_size1, population_size2]:
-        best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles1, num_generations=generation_number, population_size=population_size)
-        plot_path(best_path, obstacles1, start, end)
+        for obstacles in [obstacles1, obstacles2, obstacles3]:
+            for generation_number in [generation_number1, generation_number2, generation_number3]:
+                best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles3, num_generations=generation_number, population_size=population_size)
+                plot_path(best_path, obstacles3, start, end)
 
 
 
