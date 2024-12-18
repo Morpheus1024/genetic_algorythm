@@ -149,7 +149,7 @@ def plot_path(path, obstacles, start, end):
     x_vals, y_vals = zip(*path)
     plt.plot(x_vals, y_vals, marker='o', color='blue')
     plt.scatter(*start, color='green', label='Start')
-    plt.scatter(*end, color='red', label='End')
+    plt.scatter(*end, color='red', label='Koniec')
     plt.legend()
     plt.show()
 
@@ -182,8 +182,8 @@ if __name__ == "__main__":
     population_size2 = 60
 
     for population_size in [population_size1, population_size2]:
-        for obstacles in [obstacles1, obstacles2, obstacles3]:
-            for generation_number in [generation_number1, generation_number2, generation_number3]:
+        for generation_number in [generation_number1, generation_number2, generation_number3]:
+            for obstacles in [obstacles1, obstacles2, obstacles3]:
                 best_path, best_fitness_history, best_population_history, mean_fitness_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size)
                 plot_path(best_path, obstacles, start, end)
 
