@@ -56,6 +56,7 @@ def crossover(parent1, parent2):
     child2 = parent2[:point1] + parent1[point1:point2] + parent2[point2:]
     return child1, child2
 
+
 def mutate(individual, mutation_rate, bounds):
     """Mutacja osobnika - z dynamicznym mutowaniem."""
     for i in range(1, len(individual) - 1):
@@ -91,7 +92,7 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
     mean_fitness_history = []  # Historia średnich fitnessów
 
     for generation in range(num_generations):
-        # Dynamiczna zmiana parametrów
+
         mutation_rate = max(0.05, mutation_rate * 0.99)  # Spadek prawdopodobieństwa mutacji
         tournament_size = max(3, int(population_size / 10))  # Adaptacja rozmiaru turnieju
 
@@ -135,7 +136,7 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
     plt.xlabel('Generacja')
     plt.ylabel('Wartość przystosowania')
     plt.title('Przebieg ewolucji przystosowania')
-    plt.suptitle(f"Rozmiar populacji={population_size}, Liczba generacji={num_generations}")
+    #plt.suptitle(f"Rozmiar populacji={population_size}, Liczba generacji={num_generations}")
     plt.legend(['Najlepsza wartość przystosowania', 'Średnia wartość przystosowania'])
     plt.show()
 
@@ -153,6 +154,9 @@ def plot_path(path, obstacles, start, end):
     plt.legend()
     plt.show()
 
+def calculate_path_length(path):
+    """Oblicza długość trasy."""
+    return sum(np.linalg.norm(np.array(path[i]) - np.array(path[i + 1])) for i in range(len(path) - 1))
 
 if __name__ == "__main__":
     # Przykład użycia:
@@ -181,11 +185,28 @@ if __name__ == "__main__":
     population_size1 = 30
     population_size2 = 60
 
+    length = []
+
     for population_size in [population_size1, population_size2]:
         for generation_number in [generation_number1, generation_number2, generation_number3]:
             for obstacles in [obstacles1, obstacles2, obstacles3]:
                 best_path, best_fitness_history, best_population_history, mean_fitness_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size)
                 plot_path(best_path, obstacles, start, end)
+
+                length.append(calculate_path_length(best_path))
+
+            print("=====================================================")
+            print(f"Rozmiar populacji: {population_size}, Liczba generacji: {generation_number}")
+            print(f"Środowisko 1 - długość trasy: {length[0]}")
+            print(f"Środowisko 2 - długość trasy: {length[1]}")
+            print(f"Środowisko 3 - długość trasy: {length[2]}")
+            length = []
+
+
+            
+
+            
+
 
 
 
