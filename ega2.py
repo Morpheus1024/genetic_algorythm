@@ -148,11 +148,26 @@ def plot_path(path, obstacles, start, end):
     plt.legend()
     plt.show()
 
-# Przykład użycia:
-start = (10, 10)
-end = (90, 90)
-obstacles = [(30, 30, 50, 50), (60, 10, 70, 40), (20, 60, 40, 80)]
-best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start, end, obstacles)
 
-# Wizualizacja trasy
-plot_path(best_path, obstacles, start, end)
+if __name__ == "__main__":
+    # Przykład użycia:
+    start = (1, 1)
+    end = (99, 99)
+    obstacles1 = [(30, 30, 50, 50), (60, 10, 70, 40), (20, 60, 40, 80)]
+    generation_number = 1000
+    population_size1 = 25
+    population_size2 = 50
+    # best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size1)
+
+    # # Wizualizacja trasy
+    # plot_path(best_path, obstacles, start, end)
+
+    # best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size2)
+
+    for population_size in [population_size1, population_size2]:
+        best_path, best_fitness_history, best_population_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles1, num_generations=generation_number, population_size=population_size)
+        plot_path(best_path, obstacles1, start, end)
+
+
+
+
