@@ -21,8 +21,6 @@ img7 = cv2.cvtColor(img7, cv2.COLOR_BGR2RGB)
 img8 = cv2.imread('Szablon 4_2.png')
 img8 = cv2.cvtColor(img8, cv2.COLOR_BGR2RGB)
 
-#wyświetl je w siatce 2x4
-
 fig, axs = plt.subplots(4, 2, figsize=(10, 15))
 
 axs[0, 0].imshow(img1)

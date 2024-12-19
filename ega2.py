@@ -31,10 +31,10 @@ def line_intersects_obstacle(p1, p2, obstacle):
     px1, py1 = p1
     px2, py2 = p2
     rectangle_lines = [
-        ((x1, y1), (x2, y1)),  # Dolna krawędź
-        ((x2, y1), (x2, y2)),  # Prawa krawędź
-        ((x2, y2), (x1, y2)),  # Górna krawędź
-        ((x1, y2), (x1, y1)),  # Lewa krawędź
+        ((x1, y1), (x2, y1)), 
+        ((x2, y1), (x2, y2)), 
+        ((x2, y2), (x1, y2)), 
+        ((x1, y2), (x1, y1)),  
     ]
     for rect_line in rectangle_lines:
         if check_line_intersection(p1, p2, rect_line[0], rect_line[1]):
@@ -70,7 +70,7 @@ def mutate(individual, mutation_rate, bounds):
 def select_parents(population, fitnesses, tournament_size=3):
     """Selekcja turniejowa z adaptacyjnym rozmiarem."""
     parents = []
-    for _ in range(2):  # Selekcja dwóch rodziców
+    for _ in range(2):  
         tournament = random.sample(list(zip(population, fitnesses)), tournament_size)
         tournament.sort(key=lambda x: x[1], reverse=True)
         parents.append(tournament[0][0])
@@ -87,9 +87,9 @@ def enhanced_genetic_algorithm(start, end, obstacles, num_generations=100, popul
     bounds = [(min(start[0], end[0]), min(start[1], end[1])),
               (max(start[0], end[0]), max(start[1], end[1]))]
 
-    best_fitness_history = []  # Historia najlepszych fitnessów
-    best_population_history = []  # Historia najlepszych populacji
-    mean_fitness_history = []  # Historia średnich fitnessów
+    best_fitness_history = []  
+    best_population_history = []  
+    mean_fitness_history = []  
 
     for generation in range(num_generations):
 
