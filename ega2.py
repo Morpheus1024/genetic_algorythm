@@ -177,6 +177,9 @@ if __name__ == "__main__":
     (75, 75, 85, 85), (5, 5, 10, 10), (90, 90, 95, 95)
     ]
 
+    obstacles4= [(0, 20, 20, 100), (20, 20, 40, 40), (50, 0, 70, 20), (70, 0, 80, 10), (80, 0, 100, 20), (50, 30, 70, 40), (60, 40, 90, 50), (80, 25, 100, 35),
+                  (90, 40, 100, 60), (40, 60, 60, 80), (60, 60, 80, 80), (0, 80, 20, 100), (20, 80, 40, 100), (90, 60, 100, 90)]
+
 
     generation_number1 = 90
     generation_number2 = 225
@@ -189,9 +192,10 @@ if __name__ == "__main__":
 
     for population_size in [population_size1, population_size2]:
         for generation_number in [generation_number1, generation_number2, generation_number3]:
-            for obstacles in [obstacles1, obstacles2, obstacles3]:
+            #for obstacles in [obstacles1, obstacles2, obstacles3]:
+            for obstacles in [obstacles1, obstacles2, obstacles3, obstacles4]:
                 best_path, best_fitness_history, best_population_history, mean_fitness_history = enhanced_genetic_algorithm(start=start, end=end, obstacles=obstacles, num_generations=generation_number, population_size=population_size)
-                plot_path(best_path, obstacles, start, end)
+                #plot_path(best_path, obstacles, start, end)
 
                 length.append(calculate_path_length(best_path))
 
@@ -200,6 +204,7 @@ if __name__ == "__main__":
             print(f"Środowisko 1 - długość trasy: {length[0]}")
             print(f"Środowisko 2 - długość trasy: {length[1]}")
             print(f"Środowisko 3 - długość trasy: {length[2]}")
+            print(f"Środowisko 4 - długość trasy: {length[3]}")
             length = []
 
 
