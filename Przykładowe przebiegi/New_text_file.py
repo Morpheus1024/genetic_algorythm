@@ -16,10 +16,14 @@ img5 = cv2.imread('Szablon 3_1.png')
 img5 = cv2.cvtColor(img5, cv2.COLOR_BGR2RGB)
 img6 = cv2.imread('Szablon 3_2.png')
 img6 = cv2.cvtColor(img6, cv2.COLOR_BGR2RGB)
+img7 = cv2.imread('Szablon 4_1.png')
+img7 = cv2.cvtColor(img7, cv2.COLOR_BGR2RGB)
+img8 = cv2.imread('Szablon 4_2.png')
+img8 = cv2.cvtColor(img8, cv2.COLOR_BGR2RGB)
 
-#wyświetl je w siatce 2x3
+#wyświetl je w siatce 2x4
 
-fig, axs = plt.subplots(3, 2, figsize=(10, 15))
+fig, axs = plt.subplots(4, 2, figsize=(10, 15))
 
 axs[0, 0].imshow(img1)
 axs[0, 0].axis('off')
@@ -44,6 +48,15 @@ axs[2, 0].set_title('Szablon 3 - przebieg ewolucji')
 axs[2, 1].imshow(img6)
 axs[2, 1].axis('off')
 axs[2, 1].set_title('Szablon 3 - trasa końcowa')
+
+axs[3, 0].imshow(img7)
+axs[3, 0].axis('off')
+axs[3, 0].set_title('Szablon 4 - przebieg ewolucji')
+
+axs[3, 1].imshow(img8)
+axs[3, 1].set_title('Szablon 4 - trasa końcowa')
+axs[3, 1].axis('off')
+
 
 plt.tight_layout()
 plt.show()
